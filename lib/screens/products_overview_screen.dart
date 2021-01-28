@@ -1,9 +1,11 @@
+import 'package:e_commerce_dogal_flutter/screens/cart_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-
-
+import '../providers/cart.dart';
+import '../widgets/badge.dart';
 import '../widgets/products_grid.dart';
 
-import 'package:flutter/material.dart';
 
 enum FilterOptions{
   Favorites,
@@ -24,6 +26,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen> {
   Widget build(BuildContext context) {
 
     // final productDataContainer =  Provider.of<Products>(context, listen: false);
+    //final cartContainer =  Provider.of<Cart>(context);
     return Scaffold(
       appBar: AppBar( 
         title: Text('Doğal Ürünler'),
@@ -32,10 +35,14 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen> {
             onSelected:(FilterOptions selectedValue){
               if(selectedValue == FilterOptions.Favorites){
                   // productDataContainer.showFavoritesOnly();
-                  _showFavorites = true;
+                  setState(() {
+                    _showFavorites= true;
+                  });
               }else{
                   // productDataContainer.showAll();
-                  _showFavorites = false;
+                  setState(() {
+                    _showFavorites= false;
+                  });
               }
             },
             icon: Icon(Icons.more_vert),
@@ -48,7 +55,17 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen> {
                 child: Text('All'),
                 value: FilterOptions.All,
                 ),
-            ])
+            ]),
+            Consumer<Cart>(
+              builder: (_, cartData, ch) => 
+                Badge(
+                  value: cartData.cartQuantity.toString(), 
+                  child: ch ,
+                ),
+                child: IconButton(icon: Icon(Icons.shopping_cart), 
+                onPressed:(){
+                  Navigator.of(context).pushNamed(CartScreen.routeName);
+                })),  
         ],
         
         ),

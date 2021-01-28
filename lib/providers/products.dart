@@ -28,8 +28,9 @@ class Products with ChangeNotifier{
   }
 
   List<Product> get favoriteItems{
-
+    print(_items);
     return _items.where((element) => element.isFavorite).toList();
+    
   }
 
   Product findById(String id){

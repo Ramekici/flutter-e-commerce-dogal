@@ -1,3 +1,4 @@
+import 'package:e_commerce_dogal_flutter/providers/cart.dart';
 import 'package:e_commerce_dogal_flutter/providers/product.dart';
 import 'package:e_commerce_dogal_flutter/screens/products_detail_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context);
+    final cart = Provider.of<Cart>(context);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
@@ -32,18 +34,16 @@ class ProductItem extends StatelessWidget {
             product.title,
             textAlign: TextAlign.center,
           ),
-          leading: Consumer<Product>(
-            builder: (ctx, product, child) => IconButton(
-                icon: Icon(product.isFavorite
-                    ? Icons.favorite
-                    : Icons.favorite_border),
+          leading: Consumer<Product>(builder: (ctx, prod, child) => 
+          IconButton(
+                icon: Icon(prod.isFavorite ? Icons.favorite : Icons.favorite_border),
                 color: Theme.of(context).accentColor,
-                onPressed: () => product.toggleFavorite()),
+                onPressed: () => prod.toggleFavorite()),
           ),
           trailing: IconButton(
               icon: Icon(Icons.add_shopping_cart),
               color: Theme.of(context).accentColor,
-              onPressed: null),
+              onPressed: () => cart.addItem(product.id, product.price, product.title)),
         ),
       ),
     );
