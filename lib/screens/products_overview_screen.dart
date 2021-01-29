@@ -1,7 +1,8 @@
-import 'package:e_commerce_dogal_flutter/screens/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../screens/cart_screen.dart';
+import '../widgets/app_drawer.dart';
 import '../providers/cart.dart';
 import '../widgets/badge.dart';
 import '../widgets/products_grid.dart';
@@ -69,7 +70,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen> {
         ],
         
         ),
-      body: ProductGrid(_showFavorites)
+      drawer: AppDrawer(),
+      body: ProductGrid(_showFavorites),
 
     );
   }
