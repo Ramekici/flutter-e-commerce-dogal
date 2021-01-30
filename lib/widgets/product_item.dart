@@ -41,9 +41,20 @@ class ProductItem extends StatelessWidget {
                 onPressed: () => prod.toggleFavorite()),
           ),
           trailing: IconButton(
-              icon: Icon(Icons.add_shopping_cart),
+              icon: Icon(Icons.shopping_basket),
               color: Theme.of(context).accentColor,
-              onPressed: () => cart.addItem(product.id, product.price, product.title)),
+              onPressed: (){
+                cart.addItem(product.id, product.price, product.title);
+                Scaffold.of(context).hideCurrentSnackBar();
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Ürün Sepete Eklendi.', textAlign:TextAlign.center),
+                    duration: Duration(seconds: 2),
+                    action: SnackBarAction(label:'İptal', onPressed:(){
+                      cart.removeSingleItem(product.id);
+                    }),
+                  ));
+                }),
         ),
       ),
     );

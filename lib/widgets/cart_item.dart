@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CartItem extends StatelessWidget {
-  const CartItem({Key key, this.id, this.productId ,this.price, this.quantity, this.title})
+  const CartItem(
+      {Key key, this.id, this.productId, this.price, this.quantity, this.title})
       : super(key: key);
 
   final String id;
@@ -14,18 +15,39 @@ class CartItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Dismissible(
       key: ValueKey(id),
       background: Container(
         color: Theme.of(context).errorColor,
-        child: Icon(Icons.delete, color: Colors.white,),
+        child: Icon(
+          Icons.delete,
+          color: Colors.white,
+        ),
         alignment: Alignment.centerRight,
         padding: EdgeInsets.only(right: 20),
       ),
+      confirmDismiss: (direction) {
+        return showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: Text('Emin misin'),
+                  content: Text('Ürünü sepetten silmek mi istiyorsunuz?'),
+                  actions: <Widget>[
+                    FlatButton(
+                        onPressed: () {
+                          Navigator.of(ctx).pop(false);
+                        },
+                        child: Text('Hayır')),
+                    FlatButton(
+                        onPressed: () {
+                          Navigator.of(ctx).pop(true);
+                        },
+                        child: Text('Evet'))
+                  ],
+                ));
+      },
       direction: DismissDirection.endToStart,
-      onDismissed: (ctx){
+      onDismissed: (ctx) {
         Provider.of<Cart>(context, listen: false).removeItems(productId);
       },
       child: Card(
